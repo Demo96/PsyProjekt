@@ -36,12 +36,14 @@ public class ZakonczeniePlaceniaEvent extends BasicSimEvent<Kasa, Object> {
 
 	        // Odblokuj gniazdo
 	        kasa.setwolny(true);
+	        if(kasa.aktualnyklient.getTyppaliwa()!=0) {
 	        kasa.aktualnyklient.aktualneStanowisko.wolny=true;
 	        if (kasa.aktualnyklient.aktualneStanowisko.ListaKlientow.size() > 0)
 	               {
 	        	kasa.aktualnyklient.aktualneStanowisko.rozpoczecie = new RozpoczecieTankowaniaEvent(kasa.aktualnyklient.aktualneStanowisko);
 	               }
-	        LOGGER.info("Koniec placenia w kasie nr"  + " klient(" + kasa.aktualnyklient.getID()+") czas:");
+	        }
+	        LOGGER.info("Koniec placenia w kasie nr"  + " klient(" + kasa.aktualnyklient.getID()+") czas: "+simTime());
 
 	        // Zaplanuj dalsza obs³uge
 	        if (kasa.ListaKlientow.size() > 0)

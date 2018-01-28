@@ -45,7 +45,7 @@ public class RozpoczecieMyciaEvent extends BasicSimEvent<Myjnia, Object> {
 		        myjnia.aktualnyklient.startObs = simTime();
 	            // Wygeneruj czas obs³ugi
 	            double czasObslugi = Ustawienia.randCzasMycia();
-	            LOGGER.info(simTime()+": Rozpoczecie mycia w myjni"  + " klient[" + k.getID() +"]");
+	            LOGGER.info("Rozpoczecie mycia w myjni"  + " klient(" + k.getID() +") czas: "+simTime());
 	            // Zaplanuj koniec obs³ugi
 	            myjnia.zakonczenieMycia = new ZakonczenieMyciaEvent(myjnia, czasObslugi);
 	        }

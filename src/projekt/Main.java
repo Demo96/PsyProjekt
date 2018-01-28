@@ -26,10 +26,10 @@ public class Main {
             }
           //logger.setLevel(Level.ALL);
             SimManager model = SimManager.getInstance();
-
+            Stacja generatorZgl;
             // Utworzenie otoczenia
             try {
-				Stacja generatorZgl = new Stacja();
+				generatorZgl = new Stacja();
 			} catch (SimControlException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

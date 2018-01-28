@@ -37,7 +37,7 @@ public class ZakonczenieMyciaEvent extends BasicSimEvent<Myjnia, Object> {
 
 	        // Odblokuj gniazdo
 	        myjnia.wolny=true;
-	        LOGGER.info(simTime()+": Koniec mycia w myjni" + " klient[" + myjnia.aktualnyklient.getID()+"]");
+	        LOGGER.info("Koniec mycia w myjni" + " klient(" + myjnia.aktualnyklient.getID()+") czas: "+simTime());
 
 	        double czasObs = simTime() - myjnia.aktualnyklient.startObs;
 	        myjnia.stacja.czasMycia.setValue(czasObs);
