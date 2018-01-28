@@ -8,7 +8,6 @@ import dissimlab.simcore.BasicSimObj;
 
 public class Kasa extends BasicSimObj {
 	public LinkedList<Klient> ListaKlientow = new LinkedList<Klient>();
-	public boolean kasy[] = new boolean[Ustawienia.liczbakas];
 	public boolean wolny = true;
 	public RozpoczeciePlaceniaEvent rozpoczeciePlacenia;
 	public ZakonczeniePlaceniaEvent zakonczeniePlacenia;
@@ -16,9 +15,6 @@ public class Kasa extends BasicSimObj {
 	public Stacja stacja;
 
 	public Kasa(Stacja s) {
-		for (int i = 0; i < kasy.length; i++) {
-			kasy[i] = true;
-		}
 		stacja = s;
 	}
 
@@ -33,15 +29,6 @@ public class Kasa extends BasicSimObj {
 		// TODO Auto-generated method stub
 
 	}
-
-	public boolean czywolny() {
-		for (int i = 0; i < kasy.length; i++) {
-			if (kasy[i] = true)
-				return true;
-		}
-		return false;
-	}
-
 	public boolean getwolny() {
 		return wolny;
 	}
