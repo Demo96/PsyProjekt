@@ -33,11 +33,10 @@ public class ZakonczenieMyciaEvent extends BasicSimEvent<Myjnia, Object> {
 
 	@Override
 	protected void stateChange() throws SimControlException {
-		 final Logger LOGGER=  Logger.getLogger(Main.class .getName());
 
 	        // Odblokuj gniazdo
 	        myjnia.wolny=true;
-	        LOGGER.info("Koniec mycia w myjni" + " klient(" + myjnia.aktualnyklient.getID()+") czas: "+simTime());
+	        System.out.println("Koniec mycia w myjni" + " klient(" + myjnia.aktualnyklient.getID()+") czas: "+simTime());
 
 	        double czasObs = simTime() - myjnia.aktualnyklient.startObs;
 	        myjnia.stacja.czasMycia.setValue(czasObs);

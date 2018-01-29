@@ -5,7 +5,8 @@ import java.util.Random;
 import dissimlab.random.SimGenerator;
 
 //kilka kas nie jedna
-//klienci tylko do myjni
+//funkcjegraniczne
+//komentarzze
 public class Ustawienia {
 	public static SimGenerator generator = new SimGenerator();
 	public static double czymyjnia = 0.5;// prawdopodobienstwo ze klient bedzie chcial skorzystac z myjni

@@ -4,17 +4,18 @@ import java.util.LinkedList;
 
 import dissimlab.broker.INotificationEvent;
 import dissimlab.broker.IPublisher;
+import dissimlab.monitors.Change;
 import dissimlab.monitors.MonitoredVar;
 import dissimlab.simcore.BasicSimObj;
 
 public class Myjnia extends BasicSimObj {
-	LinkedList<Klient> listaklientow=new LinkedList<Klient>();
+	LinkedList<Klient> listaklientow=new LinkedList<Klient>();//kolejka klientow do myjni
     public RozpoczecieMyciaEvent rozpoczecieMycia;
     public ZakonczenieMyciaEvent zakonczenieMycia;
     Stacja stacja;
     private double lastChangeTime = 0;
-    private MonitoredVar carsNumber=new MonitoredVar();
-    private MonitoredVar time=new MonitoredVar();
+    public MonitoredVar liczbaklientow=new MonitoredVar();
+    public MonitoredVar time=new MonitoredVar();
     Klient aktualnyklient;
     boolean wolny=true;
 	@Override
@@ -32,21 +33,40 @@ public class Myjnia extends BasicSimObj {
 		
 	}
     public void add(Klient k) {
-        double dt = simTime()-this.lastChangeTime;
-        this.carsNumber.setValue(this.listaklientow.size()+1);
-        this.time.setValue(dt);
+        double czas = simTime()-this.lastChangeTime;
+        this.liczbaklientow.setValue(this.listaklientow.size()+1);
+        this.time.setValue(czas);
         this.lastChangeTime=simTime();
-
         this.listaklientow.add(k);
     }
 
     public Klient usun()
     {
-        double dt = simTime()-this.lastChangeTime;
-        this.carsNumber.setValue(this.listaklientow.size()-1);
-        this.time.setValue(dt);
+        double czas = simTime()-this.lastChangeTime;
+        this.liczbaklientow.setValue(this.listaklientow.size()-1);
+        this.time.setValue(czas);
         this.lastChangeTime=simTime();
 
         return this.listaklientow.removeFirst();
+    }
+    public double granicznaLiczbaSamochodow()
+    {
+        if(this.time.numberOfSamples() != this.liczbaklientow.numberOfSamples()) return -1;
+        if(this.time.numberOfSamples() == 0) return 0;
+
+        double result = 0;
+        int numberOfSamples = time.numberOfSamples();
+
+        double p = 0;
+        Change changeNumber;
+        Change changeTime;
+        for (int i = 0; i < numberOfSamples; i++) {
+            changeNumber = liczbaklientow.getChanges().get(i);
+            changeTime = time.getChanges().get(i);
+
+            result += changeNumber.getValue()*changeTime.getValue();
+            p += changeTime.getValue();
+        }
+        return result/p;
     }
 }

@@ -7,9 +7,11 @@ import dissimlab.simcore.SimControlException;
 
 public class ZakonczeniePlaceniaEvent extends BasicSimEvent<Kasa, Object> {
 	public Kasa kasa;
-	public ZakonczeniePlaceniaEvent(projekt.Kasa entity, double delay) throws SimControlException {
+	public int numerkasy;
+	public ZakonczeniePlaceniaEvent(projekt.Kasa entity, double delay,int nr) throws SimControlException {
 		super(entity, delay);
 		kasa=entity;
+		numerkasy=nr;
 	}
 
 	@Override
@@ -32,28 +34,28 @@ public class ZakonczeniePlaceniaEvent extends BasicSimEvent<Kasa, Object> {
 
 	@Override
 	protected void stateChange() throws SimControlException {
-		 final Logger LOGGER=  Logger.getLogger(Main.class .getName());
 
 	        // Odblokuj gniazdo
-	        kasa.setwolny(true);
-	        if(kasa.aktualnyklient.getTyppaliwa()!=0) {
-	        kasa.aktualnyklient.aktualneStanowisko.wolny=true;
-	        if (kasa.aktualnyklient.aktualneStanowisko.ListaKlientow.size() > 0)
+	        kasa.wolnekasy[numerkasy]=true;
+	        if(kasa.aktualnyklient[numerkasy].getTyppaliwa()!=0) {
+	        kasa.aktualnyklient[numerkasy].aktualneStanowisko.wolny=true;
+	        if (kasa.aktualnyklient[numerkasy].aktualneStanowisko.ListaKlientow.size() > 0)
 	               {
-	        	kasa.aktualnyklient.aktualneStanowisko.rozpoczecie = new RozpoczecieTankowaniaEvent(kasa.aktualnyklient.aktualneStanowisko);
+	        	kasa.aktualnyklient[numerkasy].aktualneStanowisko.rozpoczecie = new RozpoczecieTankowaniaEvent(kasa.aktualnyklient[numerkasy].aktualneStanowisko);
 	               }
 	        }
-	        LOGGER.info("Koniec placenia w kasie nr"  + " klient(" + kasa.aktualnyklient.getID()+") czas: "+simTime());
-
+	        System.out.println("Koniec placenia w kasie nr" +(numerkasy+1) + " klient(" + kasa.aktualnyklient[numerkasy].getID()+") czas: "+simTime());
+	        double czasObs = simTime() - kasa.aktualnyklient[numerkasy].startObs;
+	        kasa.stacja.czasTankowania.setValue(czasObs);
 	        // Zaplanuj dalsza obs³uge
 	        if (kasa.ListaKlientow.size() > 0)
 	        {
-	            kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(kasa);
+	            kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(kasa,numerkasy);
 	        }
 	        //a moze do myjni  tez
-	        if(kasa.aktualnyklient.getMyjnia())
+	        if(kasa.aktualnyklient[numerkasy].getMyjnia())
 	        {
-	        	kasa.stacja.myjnia.add(kasa.aktualnyklient);
+	        	kasa.stacja.myjnia.add(kasa.aktualnyklient[numerkasy]);
 	            if (kasa.stacja.myjnia.listaklientow.size()==1 && kasa.stacja.myjnia.wolny) {
 	                kasa.stacja.myjnia.rozpoczecieMycia= new RozpoczecieMyciaEvent(kasa.stacja.myjnia);
 	            }

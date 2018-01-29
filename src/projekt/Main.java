@@ -1,56 +1,47 @@
 package projekt;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
+import dissimlab.monitors.Statistics;
 import dissimlab.simcore.SimControlEvent;
 import dissimlab.simcore.SimControlException;
 import dissimlab.simcore.SimManager;
 import dissimlab.simcore.SimParameters.SimControlStatus;
 
-
 public class Main {
 	public static void main(String[] args) {
-		final Logger LOGGER=  Logger.getLogger(Main.class .getName());
-            try{
-                FileHandler fh;
-                int limit = 1000000;
-                fh = new FileHandler("C:/Users/Jakub/Desktop/abc.log",limit,1,true);
-                LOGGER.addHandler(fh);
-                SimpleFormatter formatter = new SimpleFormatter();
-                fh.setFormatter(formatter);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-          //logger.setLevel(Level.ALL);
-            SimManager model = SimManager.getInstance();
-            Stacja generatorZgl;
-            // Utworzenie otoczenia
-            try {
-				generatorZgl = new Stacja();
-			} catch (SimControlException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-            // Dwa sposoby zaplanowanego ko≈Ñca symulacji
-            //model.setEndSimTime(10000);
-            // lub
-            try {
-				SimControlEvent stopEvent = new SimControlEvent(1000.0, SimControlStatus.STOPSIMULATION);
-			} catch (SimControlException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-            // Uruchomienie symulacji za po≈õrednictwem metody "start"
-            try {
-				model.startSimulation();
-			} catch (SimControlException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            //generatorZgl.pokazWyniki();
+		SimManager simmanager = SimManager.getInstance();
+		Stacja stacjaX = null;
+		try {
+			stacjaX = new Stacja();
+		} catch (SimControlException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			SimControlEvent stopEvent = new SimControlEvent(100.0, SimControlStatus.STOPSIMULATION);
+		} catch (SimControlException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			simmanager.startSimulation();
+		} catch (SimControlException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int i = 0; i < stacjaX.ListaStanowisk.size(); i++) {
+			System.out.println("oczekiwanπ granicznπ liczbÍ samochodÛw w kolejce do dystrybutora nr " + (i + 1) + "= "
+					+ stacjaX.ListaStanowisk.get(i).granicznaLiczbaSamochodow());
+		}
+
+		System.out.println("oczekiwanπ granicznπ liczbÍ samochodÛw w kolejkach do myjni= "
+				+ stacjaX.myjnia.granicznaLiczbaSamochodow());
+		System.out.println(
+				"oczekiwany graniczny czas tankowania samochodu= " + Statistics.arithmeticMean(stacjaX.czasTankowania));
+		System.out
+				.println("oczekiwany graniczny czas mycia samochodu = " + Statistics.arithmeticMean(stacjaX.czasMycia));
+		System.out.println("graniczne prawdopodobieÒstwo rezygnacji z obs≥ugi przez kierowcÍ samochodu= "
+				+ Statistics.arithmeticMean(stacjaX.czasTankowania));
 	}
 }

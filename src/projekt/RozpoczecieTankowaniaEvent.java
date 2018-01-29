@@ -37,7 +37,6 @@ public class RozpoczecieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
 
 	@Override
 	protected void stateChange() throws SimControlException {
-		final Logger LOGGER=  Logger.getLogger(Main.class .getName());
 		if (stanowisko.ListaKlientow.size() > 0)
         {
             // Zablokuj gniazdo
@@ -53,7 +52,7 @@ public class RozpoczecieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
                 czasObslugi = Ustawienia.randCzasObslugiLPG();
             else if(k.getTyppaliwa() == 2)
                 czasObslugi = Ustawienia.randCzasObslugiON();
-            LOGGER.info("Poczatek tankowania na stanowisku nr " + stanowisko.getID() + " klient(" + k.getID()+") czas:"+simTime());
+            System.out.println("Poczatek tankowania na stanowisku nr " + stanowisko.getID() + " klient(" + k.getID()+") czas:"+simTime());
             // Zaplanuj koniec obs³ugi
             stanowisko.aktualnyKlient.aktualneStanowisko=stanowisko;
             stanowisko.zakoncz = new ZakonczenieTankowaniaEvent(stanowisko, czasObslugi);

@@ -8,14 +8,16 @@ import dissimlab.simcore.BasicSimObj;
 
 public class Kasa extends BasicSimObj {
 	public LinkedList<Klient> ListaKlientow = new LinkedList<Klient>();
-	public boolean wolny = true;
 	public RozpoczeciePlaceniaEvent rozpoczeciePlacenia;
 	public ZakonczeniePlaceniaEvent zakonczeniePlacenia;
-	public Klient aktualnyklient;
+	public Klient aktualnyklient[]=new Klient[Ustawienia.liczbakas];
 	public Stacja stacja;
+	public boolean wolnekasy[]=new boolean[Ustawienia.liczbakas];
 
 	public Kasa(Stacja s) {
 		stacja = s;
+		for(int i=0;i<Ustawienia.liczbakas;i++)
+			wolnekasy[i]=true;
 	}
 
 	@Override
@@ -29,11 +31,13 @@ public class Kasa extends BasicSimObj {
 		// TODO Auto-generated method stub
 
 	}
-	public boolean getwolny() {
-		return wolny;
-	}
-
-	public void setwolny(boolean w) {
-		wolny = w;
+	public int ktorawolna()
+	{
+		for(int i=0;i<Ustawienia.liczbakas;i++)
+		{
+			if(wolnekasy[i]==true)
+				return i;
+		}
+		return -1;
 	}
 }

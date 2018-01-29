@@ -28,13 +28,11 @@ public class ZakonczenieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
 	}
 	@Override
 	protected void stateChange() throws SimControlException {
-		final Logger LOGGER=  Logger.getLogger(Main.class .getName());
 		// Odblokuj gniazdo
         //stanowisko.wolny=true;
-        LOGGER.info("Koniec tankowania na stanowisku numer"  + stanowisko.getID() + " klienta(" + stanowisko.aktualnyKlient.getID() +") czas: "+simTime());
+		System.out.println("Koniec tankowania na stanowisku numer"  + stanowisko.getID() + " klienta(" + stanowisko.aktualnyKlient.getID() +") czas: "+simTime());
 
-        double czasObs = simTime() - stanowisko.aktualnyKlient.startObs;
-        stanowisko.stacja.czasTankowania.setValue(czasObs);
+        
      // Zaplanuj dalsza obs³uge
      //   if (stanowisko.ListaKlientow.size() > 0)
      //   {
@@ -44,8 +42,9 @@ public class ZakonczenieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
         
             // do kasy
             stanowisko.stacja.kasa.ListaKlientow.add(stanowisko.aktualnyKlient);
-            if (stanowisko.stacja.kasa.ListaKlientow.size()==1 && stanowisko.stacja.kasa.getwolny()) {
-                stanowisko.stacja.kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(stanowisko.stacja.kasa);
+            int temp=stanowisko.stacja.kasa.ktorawolna();
+            if (stanowisko.stacja.kasa.ListaKlientow.size()==1 &&temp >-1) {
+                stanowisko.stacja.kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(stanowisko.stacja.kasa,temp);
 
         stanowisko.aktualnyKlient = null;
 	}

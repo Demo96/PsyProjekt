@@ -34,7 +34,6 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 
 	@Override
 	protected void stateChange() throws SimControlException {
-		final Logger LOGGER = Logger.getLogger(Main.class.getName());
 		Random gen = new Random();
 
 		Klient k = new Klient(++IdK);
@@ -44,7 +43,7 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 			k.setTyppaliwa(gen.nextInt(3) + 1);
 		}
 		k.startObs = simTime();
-		LOGGER.info("Pojawienie sie klienta(" + k.getID() + ") typ paliwa:" + k.getTyppaliwa() + " czas: " + simTime());
+		System.out.println("Pojawienie sie klienta(" + k.getID() + ") typ paliwa:" + k.getTyppaliwa() + " czas: " + simTime());
 		if (k.getTyppaliwa() != 0) {
 			int pom = -1;
 			for (int i = 0; i < Ustawienia.maxkolejka; i++) {
@@ -64,11 +63,12 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 							stacja.ListaStanowisk.get(pom));
 				}
 			} else
-				LOGGER.info("Klient(" + k.getID() + ") zrezygnowal z powodu braku miejsca na stanowiskach");
+				System.out.println("Klient(" + k.getID() + ") zrezygnowal z powodu braku miejsca na stanowiskach");
 		}
 		else {stacja.kasa.ListaKlientow.add(k);
-        if (stacja.kasa.ListaKlientow.size()==1 && stacja.kasa.getwolny()) {
-            stacja.kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(stacja.kasa);}}
+		int temp=stacja.kasa.ktorawolna();
+        if (stacja.kasa.ListaKlientow.size()==1 && temp>-1) {
+            stacja.kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(stacja.kasa,temp);}}
 		double odstep = Ustawienia.randOdstepKlient();
 		stacja.przybycie = new PrzybycieKlientaEvent(stacja, odstep);
 	}

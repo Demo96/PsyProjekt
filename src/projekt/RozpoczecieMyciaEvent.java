@@ -33,7 +33,6 @@ public class RozpoczecieMyciaEvent extends BasicSimEvent<Myjnia, Object> {
 	}
 	@Override
 	protected void stateChange() throws SimControlException {
-		 final Logger LOGGER=  Logger.getLogger(Main.class .getName());
 
 	        if (myjnia.listaklientow.size()> 0)
 	        {
@@ -45,7 +44,7 @@ public class RozpoczecieMyciaEvent extends BasicSimEvent<Myjnia, Object> {
 		        myjnia.aktualnyklient.startObs = simTime();
 	            // Wygeneruj czas obs³ugi
 	            double czasObslugi = Ustawienia.randCzasMycia();
-	            LOGGER.info("Rozpoczecie mycia w myjni"  + " klient(" + k.getID() +") czas: "+simTime());
+	            System.out.println("Rozpoczecie mycia w myjni"  + " klient(" + k.getID() +") czas: "+simTime());
 	            // Zaplanuj koniec obs³ugi
 	            myjnia.zakonczenieMycia = new ZakonczenieMyciaEvent(myjnia, czasObslugi);
 	        }

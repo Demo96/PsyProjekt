@@ -6,7 +6,7 @@ import dissimlab.simcore.BasicSimObj;
 
 public class Klient extends BasicSimObj {
 	private int ID;
-	private int typpaliwa=0;;//0tylkomyjnia 1benzyna 2LPG 3ON
+	private int typpaliwa=0;//0tylkomyjnia 1benzyna 2LPG 3ON
 	private Boolean myjnia=true;
 	public double startObs;
 	public Stanowisko aktualneStanowisko;

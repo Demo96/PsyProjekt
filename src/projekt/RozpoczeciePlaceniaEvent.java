@@ -7,13 +7,12 @@ import dissimlab.simcore.SimControlException;
 
 public class RozpoczeciePlaceniaEvent extends BasicSimEvent<Kasa, Object>{
 	public Kasa kasa;
-	public RozpoczeciePlaceniaEvent(Kasa entity, double delay) throws SimControlException {
-		super(entity, delay);
-		kasa=entity;
-	}
-	public RozpoczeciePlaceniaEvent(Kasa entity) throws SimControlException {
+	public int numerkasy;
+
+	public RozpoczeciePlaceniaEvent(Kasa entity,int nr) throws SimControlException {
 		super(entity);
 		kasa=entity;
+		numerkasy=nr;
 	}
 	@Override
 	public Object getEventParams() {
@@ -32,21 +31,20 @@ public class RozpoczeciePlaceniaEvent extends BasicSimEvent<Kasa, Object>{
 	}
 	@Override
 	protected void stateChange() throws SimControlException {
-		final Logger LOGGER=  Logger.getLogger(Main.class .getName());
 		if (kasa.ListaKlientow.size() > 0)
         {
             // Zablokuj gniazdo
-            kasa.setwolny(false);
+            kasa.wolnekasy[numerkasy]=false;
             // Pobierz zg³oszenie
             Klient k = kasa.ListaKlientow.removeFirst();
-            kasa.aktualnyklient = k;
+            kasa.aktualnyklient[numerkasy] = k;
 
             // Wygeneruj czas obs³ugi
             double czasObslugi = Ustawienia.randCzasPlacenia();
 
-            LOGGER.info("Rozpoczecie placenia w kasie nr " + " klienta(" + k.getID() +") czas: "+simTime());
+            System.out.println("Rozpoczecie placenia w kasie nr "+(numerkasy+1)+ " klienta(" + k.getID() +") czas: "+simTime());
             // Zaplanuj koniec obs³ugi
-            kasa.zakonczeniePlacenia = new ZakonczeniePlaceniaEvent(kasa, czasObslugi);
+            kasa.zakonczeniePlacenia = new ZakonczeniePlaceniaEvent(kasa, czasObslugi,numerkasy);
         }
 		
 	}
