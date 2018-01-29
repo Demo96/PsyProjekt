@@ -3,10 +3,9 @@ package projekt;
 import java.util.Random;
 
 import dissimlab.random.SimGenerator;
-
-//kilka kas nie jedna
+//graniczne prawd uciekniecia :o
 //funkcjegraniczne
-//komentarzze
+//komentarzze i warningi
 public class Ustawienia {
 	public static SimGenerator generator = new SimGenerator();
 	public static double czymyjnia = 0.5;// prawdopodobienstwo ze klient bedzie chcial skorzystac z myjni
