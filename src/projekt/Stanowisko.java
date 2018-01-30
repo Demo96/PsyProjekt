@@ -15,9 +15,7 @@ public class Stanowisko extends BasicSimObj {
     public LinkedList<Klient> ListaKlientow=new LinkedList<Klient>();
     public RozpoczecieTankowaniaEvent rozpoczecie;
     public ZakonczenieTankowaniaEvent zakoncz;
-	private double lastChangeTime;
 	public MonitoredVar liczbaklientow;
-    public MonitoredVar time;
     public boolean wolny;
     public Stacja stacja;
 	
@@ -28,7 +26,6 @@ public class Stanowisko extends BasicSimObj {
     	typ=t;
     	wolny=true;
     	liczbaklientow = new MonitoredVar();
-        time = new MonitoredVar();
     }
 	@Override
 	public boolean filter(IPublisher arg0, INotificationEvent arg1) {
@@ -57,42 +54,15 @@ public class Stanowisko extends BasicSimObj {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	//dodanie klienta do stanowiska z zapisaniem czasu i dlugosci kolejki w zmiennych MonitoredVar
+	//dodanie klienta do stanowiska 
 	public void add(Klient k) {
-        double dt = simTime()-this.lastChangeTime;
-        this.liczbaklientow.setValue(ListaKlientow.size()+1);
-        this.time.setValue(dt);
-        this.lastChangeTime=simTime();
-
+        this.liczbaklientow.setValue((double)ListaKlientow.size()+1);
         this.ListaKlientow.add(k);
     }
-	//usuniecie klienta ze stanowiska z zapisaniem czasu i dlugosci kolejki w zmiennych MonitoredVar
+	//usuniecie klienta ze stanowiska 
 	public Klient delete() {
-		double dt = simTime()-this.lastChangeTime;
-        this.liczbaklientow.setValue(this.ListaKlientow.size()-1);
-        this.time.setValue(dt);
-        this.lastChangeTime=simTime();
+        this.liczbaklientow.setValue((double)this.ListaKlientow.size()-1);
         return ListaKlientow.removeFirst();
 	}
-	//wylicza graniczna liczbe klientow w kolejce
-	public double granicznaLiczbaSamochodow()
-    {
-        if(this.time.numberOfSamples() != this.liczbaklientow.numberOfSamples()) return -1;
-        if(this.time.numberOfSamples() == 0) return 0;
 
-        double result = 0;
-        int numberOfSamples = time.numberOfSamples();
-
-        double p = 0;
-        Change changeNumber;
-        Change changeTime;
-        for (int i = 0; i < numberOfSamples; i++) {
-            changeNumber = liczbaklientow.getChanges().get(i);
-            changeTime = time.getChanges().get(i);
-
-            result += changeNumber.getValue()*changeTime.getValue();
-            p += changeTime.getValue();
-        }
-        return result/p;
-    }
 }

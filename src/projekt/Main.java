@@ -31,12 +31,12 @@ public class Main {
 			e.printStackTrace();
 		}
 		for (int i = 0; i < myStacja.ListaStanowisk.size(); i++) {
-			System.out.println("oczekiwan¹ graniczn¹ liczbê samochodów w kolejce do dystrybutora nr " + (i + 1) + "= "
-					+ myStacja.ListaStanowisk.get(i).granicznaLiczbaSamochodow());
-		}
 
+			System.out.println("oczekiwan¹ graniczn¹ liczbê samochodów w kolejkach do dystrybutora nr "+(i+1)+" = "
+					+ Statistics.arithmeticMean(myStacja.ListaStanowisk.get(i).liczbaklientow));
+		}
 		System.out.println("oczekiwan¹ graniczn¹ liczbê samochodów w kolejkach do myjni= "
-				+ myStacja.myjnia.granicznaLiczbaKolejki());
+				+ Statistics.arithmeticMean(myStacja.myjnia.liczbaklientow));
 		System.out.println(
 				"oczekiwany graniczny czas tankowania samochodu= " + Statistics.arithmeticMean(myStacja.czasTankowania));
 		System.out
