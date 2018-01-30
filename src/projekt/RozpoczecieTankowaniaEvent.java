@@ -1,7 +1,5 @@
 package projekt;
 
-import java.util.logging.Logger;
-
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
 
@@ -39,12 +37,12 @@ public class RozpoczecieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
 	protected void stateChange() throws SimControlException {
 		if (stanowisko.ListaKlientow.size() > 0)
         {
-            // Zablokuj gniazdo
+			// ustaw stanowisko jako zajete, przenies pierwszego klienta z kolejki do stanowiska jako aktualnego klienta
             stanowisko.wolny=false;
             // Pobierz zg³oszenie
             Klient k = stanowisko.delete();
             stanowisko.aktualnyKlient = k;
-         // Wygeneruj czas obs³ugi
+         // oblicz czas mycia i zaplanuj jego zakonczenie po uplywie tego czasu
             double czasObslugi = 0;
             if(k.getTyppaliwa() == 0)
                 czasObslugi = Ustawienia.randCzasObslugiBenzyna();
@@ -53,7 +51,6 @@ public class RozpoczecieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
             else if(k.getTyppaliwa() == 2)
                 czasObslugi = Ustawienia.randCzasObslugiON();
             System.out.println("Poczatek tankowania na stanowisku nr " + stanowisko.getID() + " klient(" + k.getID()+") czas:"+simTime());
-            // Zaplanuj koniec obs³ugi
             stanowisko.aktualnyKlient.aktualneStanowisko=stanowisko;
             stanowisko.zakoncz = new ZakonczenieTankowaniaEvent(stanowisko, czasObslugi);
         }

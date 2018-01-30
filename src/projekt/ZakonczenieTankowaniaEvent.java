@@ -1,7 +1,5 @@
 package projekt;
 
-import java.util.logging.Logger;
-
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
 
@@ -28,19 +26,8 @@ public class ZakonczenieTankowaniaEvent extends BasicSimEvent<Stanowisko, Object
 	}
 	@Override
 	protected void stateChange() throws SimControlException {
-		// Odblokuj gniazdo
-        //stanowisko.wolny=true;
-		System.out.println("Koniec tankowania na stanowisku numer"  + stanowisko.getID() + " klienta(" + stanowisko.aktualnyKlient.getID() +") czas: "+simTime());
-
-        
-     // Zaplanuj dalsza obs³uge
-     //   if (stanowisko.ListaKlientow.size() > 0)
-     //   {
-     //       stanowisko.rozpoczecie = new RozpoczecieTankowaniaEvent(stanowisko);
-       // }
-
-        
-            // do kasy
+		System.out.println("Koniec tankowania na stanowisku nr "  + stanowisko.getID() + " klienta(" + stanowisko.aktualnyKlient.getID() +") czas: "+simTime());
+           //rozpocznij placenie przez klienta
             stanowisko.stacja.kasa.ListaKlientow.add(stanowisko.aktualnyKlient);
             int temp=stanowisko.stacja.kasa.ktorawolna();
             if (stanowisko.stacja.kasa.ListaKlientow.size()==1 &&temp >-1) {

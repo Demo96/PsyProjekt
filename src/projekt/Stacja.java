@@ -15,6 +15,8 @@ public class Stacja extends BasicSimObj {
     public PrzybycieKlientaEvent przybycie;
     public MonitoredVar czasTankowania;
     public MonitoredVar czasMycia;
+    public double zrezygnowaniKlienci;//liczba kientow  ktorzy zrezygnowali
+    public double wszyscyKlienci;//liczba wszystkich klientow
     public Stacja() throws SimControlException
     {
     	czasTankowania=new MonitoredVar();

@@ -16,8 +16,8 @@ public class Myjnia extends BasicSimObj {
     private double lastChangeTime = 0;
     public MonitoredVar liczbaklientow=new MonitoredVar();
     public MonitoredVar time=new MonitoredVar();
-    Klient aktualnyklient;
-    boolean wolny=true;
+    Klient aktualnyklient;//aktualny klient myjni
+    boolean wolny=true;//czy myjnia jest niezajeta
 	@Override
 	public boolean filter(IPublisher arg0, INotificationEvent arg1) {
 		// TODO Auto-generated method stub
@@ -32,6 +32,7 @@ public class Myjnia extends BasicSimObj {
 		// TODO Auto-generated method stub
 		
 	}
+	//dodanie klienta do myjni z zapisaniem czasu i dlugosci kolejki w zmiennych MonitoredVar
     public void add(Klient k) {
         double czas = simTime()-this.lastChangeTime;
         this.liczbaklientow.setValue(this.listaklientow.size()+1);
@@ -39,7 +40,7 @@ public class Myjnia extends BasicSimObj {
         this.lastChangeTime=simTime();
         this.listaklientow.add(k);
     }
-
+  //usuniecie klienta z myjni z zapisaniem czasu i dlugosci kolejki w zmiennych MonitoredVar
     public Klient usun()
     {
         double czas = simTime()-this.lastChangeTime;
@@ -49,7 +50,8 @@ public class Myjnia extends BasicSimObj {
 
         return this.listaklientow.removeFirst();
     }
-    public double granicznaLiczbaSamochodow()
+ //wylicza graniczna liczbe klientow w kolejce
+    public double granicznaLiczbaKolejki()
     {
         if(this.time.numberOfSamples() != this.liczbaklientow.numberOfSamples()) return -1;
         if(this.time.numberOfSamples() == 0) return 0;

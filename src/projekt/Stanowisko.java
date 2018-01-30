@@ -57,6 +57,7 @@ public class Stanowisko extends BasicSimObj {
 	public void setID(int iD) {
 		ID = iD;
 	}
+	//dodanie klienta do stanowiska z zapisaniem czasu i dlugosci kolejki w zmiennych MonitoredVar
 	public void add(Klient k) {
         double dt = simTime()-this.lastChangeTime;
         this.liczbaklientow.setValue(ListaKlientow.size()+1);
@@ -65,6 +66,7 @@ public class Stanowisko extends BasicSimObj {
 
         this.ListaKlientow.add(k);
     }
+	//usuniecie klienta ze stanowiska z zapisaniem czasu i dlugosci kolejki w zmiennych MonitoredVar
 	public Klient delete() {
 		double dt = simTime()-this.lastChangeTime;
         this.liczbaklientow.setValue(this.ListaKlientow.size()-1);
@@ -72,6 +74,7 @@ public class Stanowisko extends BasicSimObj {
         this.lastChangeTime=simTime();
         return ListaKlientow.removeFirst();
 	}
+	//wylicza graniczna liczbe klientow w kolejce
 	public double granicznaLiczbaSamochodow()
     {
         if(this.time.numberOfSamples() != this.liczbaklientow.numberOfSamples()) return -1;

@@ -7,12 +7,12 @@ import dissimlab.broker.IPublisher;
 import dissimlab.simcore.BasicSimObj;
 
 public class Kasa extends BasicSimObj {
-	public LinkedList<Klient> ListaKlientow = new LinkedList<Klient>();
+	public LinkedList<Klient> ListaKlientow = new LinkedList<Klient>();//kolejka do kasy
 	public RozpoczeciePlaceniaEvent rozpoczeciePlacenia;
 	public ZakonczeniePlaceniaEvent zakonczeniePlacenia;
-	public Klient aktualnyklient[]=new Klient[Ustawienia.liczbakas];
+	public Klient aktualnyklient[]=new Klient[Ustawienia.liczbakas];//aktualni klienci w kasach
 	public Stacja stacja;
-	public boolean wolnekasy[]=new boolean[Ustawienia.liczbakas];
+	public boolean wolnekasy[]=new boolean[Ustawienia.liczbakas];//czy kasa nr X jest wolna
 
 	public Kasa(Stacja s) {
 		stacja = s;
@@ -31,6 +31,7 @@ public class Kasa extends BasicSimObj {
 		// TODO Auto-generated method stub
 
 	}
+	//zwraca numer wolnej kasy lub -1 jesli wszystkie zajete
 	public int ktorawolna()
 	{
 		for(int i=0;i<Ustawienia.liczbakas;i++)

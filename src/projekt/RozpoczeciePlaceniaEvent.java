@@ -1,7 +1,5 @@
 package projekt;
 
-import java.util.logging.Logger;
-
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
 
@@ -33,17 +31,14 @@ public class RozpoczeciePlaceniaEvent extends BasicSimEvent<Kasa, Object>{
 	protected void stateChange() throws SimControlException {
 		if (kasa.ListaKlientow.size() > 0)
         {
-            // Zablokuj gniazdo
+            // ustaw kase jako zajeta, przenies pierwszego klienta z kolejki do kasy jako aktualnego klienta 
             kasa.wolnekasy[numerkasy]=false;
-            // Pobierz zg³oszenie
             Klient k = kasa.ListaKlientow.removeFirst();
             kasa.aktualnyklient[numerkasy] = k;
 
-            // Wygeneruj czas obs³ugi
+         // oblicz czas placenia i zaplanuj jego zakonczenie po uplywie tego czasu
             double czasObslugi = Ustawienia.randCzasPlacenia();
-
             System.out.println("Rozpoczecie placenia w kasie nr "+(numerkasy+1)+ " klienta(" + k.getID() +") czas: "+simTime());
-            // Zaplanuj koniec obs³ugi
             kasa.zakonczeniePlacenia = new ZakonczeniePlaceniaEvent(kasa, czasObslugi,numerkasy);
         }
 		

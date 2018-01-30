@@ -3,16 +3,14 @@ package projekt;
 import java.util.Random;
 
 import dissimlab.random.SimGenerator;
-//graniczne prawd uciekniecia :o
-//funkcjegraniczne
-//komentarzze i warningi
+
 public class Ustawienia {
 	public static SimGenerator generator = new SimGenerator();
 	public static double czymyjnia = 0.5;// prawdopodobienstwo ze klient bedzie chcial skorzystac z myjni
 	public static int liczbakas = 2;// liczba kas
 	public static int benzyna = 1, LPG = 1, ON = 1;// liczba stanowisk z beznyna,LPG,ON
 	public static int maxkolejka = 1;// max dlugosc kolejki do stanowiska (wlacznie z obecnie korzystajacym)
-	// rozklady typ 0-normalny 1-uniform 2-gamma 3-beta
+	// rozklady typ 0-normalny 1-jednostkowyuniform 2-gamma 3-beta
 	public static int RozkladPojawieniaKlienta = 0;// odstep miedzy pojawianiem sie klientow
 	public static double PKarg1 = 1.0, PKarg2 = 1.0;
 	public static int Rozkladbenzyna = 1;// czas tankowania benzyny
@@ -32,7 +30,6 @@ public class Ustawienia {
 			return true;
 		return false;
 	}
-
 	public static double rand(int typ, double a, double b) {
 		if (typ == 0)
 			return Math.abs(generator.normal(a, b));

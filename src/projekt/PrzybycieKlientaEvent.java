@@ -1,7 +1,6 @@
 package projekt;
 
 import java.util.Random;
-import java.util.logging.Logger;
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
 
@@ -35,17 +34,22 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 	@Override
 	protected void stateChange() throws SimControlException {
 		Random gen = new Random();
-
 		Klient k = new Klient(++IdK);
+		stacja.wszyscyKlienci += 1;
+		// wylosuj typ paliwa
 		if (k.getMyjnia()) {
 			k.setTyppaliwa(gen.nextInt(4));
 		} else {
 			k.setTyppaliwa(gen.nextInt(3) + 1);
 		}
 		k.startObs = simTime();
-		System.out.println("Pojawienie sie klienta(" + k.getID() + ") typ paliwa:" + k.getTyppaliwa() + " czas: " + simTime());
+		System.out.println(
+				"Pojawienie sie klienta(" + k.getID() + ") typ paliwa:" + k.getTyppaliwa() + " czas: " + simTime());
+		// jesli klient nie przyjechal tylko do myjni, w przeciwnym przypadku klient
+		// idzie do kolejki do kasy i jesli jest wolna kasa to rozpoczyna placenie
 		if (k.getTyppaliwa() != 0) {
 			int pom = -1;
+			// sprawdzenie ktore stanowisko ma najkrotsza kolejke mniejsza od maksymalnej
 			for (int i = 0; i < Ustawienia.maxkolejka; i++) {
 				for (int j = 0; j < stacja.ListaStanowisk.size(); j++) {
 					if (stacja.ListaStanowisk.get(j).getTyp() == k.getTyppaliwa())
@@ -55,6 +59,8 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 						}
 				}
 			}
+			// jesli jest jakies wolne stanowisko to rozpocznij na nim tankowanie, jesli nie
+			// klient rezygnuje
 			if (pom > -1) {
 				stacja.ListaStanowisk.get(pom).add(k);
 
@@ -62,13 +68,18 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 					stacja.ListaStanowisk.get(pom).rozpoczecie = new RozpoczecieTankowaniaEvent(
 							stacja.ListaStanowisk.get(pom));
 				}
-			} else
+			} else {
+				stacja.zrezygnowaniKlienci += 1;
 				System.out.println("Klient(" + k.getID() + ") zrezygnowal z powodu braku miejsca na stanowiskach");
+			}
+		} else {
+			stacja.kasa.ListaKlientow.add(k);
+			int temp = stacja.kasa.ktorawolna();
+			if (stacja.kasa.ListaKlientow.size() == 1 && temp > -1) {
+				stacja.kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(stacja.kasa, temp);
+			}
 		}
-		else {stacja.kasa.ListaKlientow.add(k);
-		int temp=stacja.kasa.ktorawolna();
-        if (stacja.kasa.ListaKlientow.size()==1 && temp>-1) {
-            stacja.kasa.rozpoczeciePlacenia = new RozpoczeciePlaceniaEvent(stacja.kasa,temp);}}
+		//wylicz odstep przed pojawieniem sie nastepnego klienta
 		double odstep = Ustawienia.randOdstepKlient();
 		stacja.przybycie = new PrzybycieKlientaEvent(stacja, odstep);
 	}

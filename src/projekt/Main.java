@@ -9,39 +9,39 @@ import dissimlab.simcore.SimParameters.SimControlStatus;
 public class Main {
 	public static void main(String[] args) {
 
-		SimManager simmanager = SimManager.getInstance();
-		Stacja stacjaX = null;
+		SimManager simManager = SimManager.getInstance();
+		Stacja myStacja = null;
 		try {
-			stacjaX = new Stacja();
+			myStacja = new Stacja();
 		} catch (SimControlException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			SimControlEvent stopEvent = new SimControlEvent(100.0, SimControlStatus.STOPSIMULATION);
+			SimControlEvent stopEvent = new SimControlEvent(105.0, SimControlStatus.STOPSIMULATION);
 		} catch (SimControlException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
-			simmanager.startSimulation();
+			simManager.startSimulation();
 		} catch (SimControlException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (int i = 0; i < stacjaX.ListaStanowisk.size(); i++) {
+		for (int i = 0; i < myStacja.ListaStanowisk.size(); i++) {
 			System.out.println("oczekiwan¹ graniczn¹ liczbê samochodów w kolejce do dystrybutora nr " + (i + 1) + "= "
-					+ stacjaX.ListaStanowisk.get(i).granicznaLiczbaSamochodow());
+					+ myStacja.ListaStanowisk.get(i).granicznaLiczbaSamochodow());
 		}
 
 		System.out.println("oczekiwan¹ graniczn¹ liczbê samochodów w kolejkach do myjni= "
-				+ stacjaX.myjnia.granicznaLiczbaSamochodow());
+				+ myStacja.myjnia.granicznaLiczbaKolejki());
 		System.out.println(
-				"oczekiwany graniczny czas tankowania samochodu= " + Statistics.arithmeticMean(stacjaX.czasTankowania));
+				"oczekiwany graniczny czas tankowania samochodu= " + Statistics.arithmeticMean(myStacja.czasTankowania));
 		System.out
-				.println("oczekiwany graniczny czas mycia samochodu = " + Statistics.arithmeticMean(stacjaX.czasMycia));
+				.println("oczekiwany graniczny czas mycia samochodu = " + Statistics.arithmeticMean(myStacja.czasMycia));
 		System.out.println("graniczne prawdopodobieñstwo rezygnacji z obs³ugi przez kierowcê samochodu= "
-				+ Statistics.arithmeticMean(stacjaX.czasTankowania));
+				+ myStacja.zrezygnowaniKlienci/myStacja.wszyscyKlienci);
 	}
 }
