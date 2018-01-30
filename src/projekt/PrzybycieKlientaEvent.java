@@ -44,7 +44,7 @@ public class PrzybycieKlientaEvent extends BasicSimEvent<Stacja, Object> {
 		}
 		k.startObs = simTime();
 		System.out.println(
-				"Pojawienie sie klienta(" + k.getID() + ") typ paliwa:" + k.getTyppaliwa() + " czas: " + simTime());
+				"Pojawienie sie klienta(" + k.getID() + ") typ paliwa: " + k.getTyppaliwa() + " czas: " + simTime());
 		// jesli klient nie przyjechal tylko do myjni, w przeciwnym przypadku klient
 		// idzie do kolejki do kasy i jesli jest wolna kasa to rozpoczyna placenie
 		if (k.getTyppaliwa() != 0) {
