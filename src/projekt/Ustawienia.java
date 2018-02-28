@@ -10,7 +10,7 @@ public abstract class Ustawienia {
 	public static int liczbakas = 2;// liczba kas
 	public static int benzyna = 1, LPG = 1, ON = 1;// liczba stanowisk z beznyna,LPG,ON
 	public static int maxkolejka = 2;// max dlugosc kolejki do stanowiska (wlacznie z obecnie korzystajacym)
-	// rozklady typ 0-normalny 1-jednostkowyuniform 2-gamma 3-beta
+	// rozklady typ 0-normalny 1-jednostkowy 2-gamma 3-beta
 	public static int RozkladPojawieniaKlienta = 0;// odstep miedzy pojawianiem sie klientow
 	public static double PKarg1 = 0.0, PKarg2 = 1.0;
 	public static int Rozkladbenzyna = 1;// czas tankowania benzyny
@@ -21,8 +21,8 @@ public abstract class Ustawienia {
 	public static double ONarg1 = 2.0, ONarg2 = 5.0;
 	public static int RozkladPlacenia = 2;// czas placenia w kasie
 	public static double PLarg1 = 5.0, PLarg2 = 5.0;
-	public static int RozkladMycia = 3;// czas mycia w myjni
-	public static double MYarg1 = 4.0, MYarg2 = 8.0;
+	public static int RozkladMycia = 0;// czas mycia w myjni
+	public static double MYarg1 = 0.0, MYarg2 = 1.0;
 
 	public static boolean czyMyjnia() {
 		Random generatorPom = new Random();

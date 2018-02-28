@@ -39,7 +39,8 @@ public class Myjnia extends BasicSimObj {
     public Klient usun()
     {
         this.liczbaklientow.setValue((double)this.listaklientow.size()-1);
-        return this.listaklientow.removeFirst();
+        Klient x=this.listaklientow.removeFirst();
+        return x;
     }
 
 }
